@@ -1,0 +1,697 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wellcee 注册与资料完善</title>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    :root {
+      --teal: #28c1bf;
+      --teal-dark: #18aaa8;
+      --ink: #101010;
+      --muted: #73777d;
+      --page: #f5f6f8;
+      --line: #e6e8eb;
+      --white: #fff;
+      --shadow: 0 16px 42px rgba(15, 23, 42, .12);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--page);
+      font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", Arial, sans-serif;
+    }
+
+    button, input, textarea { font: inherit; }
+    button { cursor: pointer; border: 0; }
+    a { color: inherit; text-decoration: none; }
+
+    .topbar {
+      height: 72px;
+      background: var(--white);
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+
+    .topbar-inner {
+      width: min(1210px, calc(100vw - 52px));
+      height: 100%;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: grid;
+      gap: 1px;
+      font-weight: 900;
+      line-height: .95;
+      font-size: 22px;
+      letter-spacing: 0;
+    }
+
+    .logo span {
+      font-size: 12px;
+      letter-spacing: 3px;
+      font-weight: 700;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .back {
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .page {
+      width: min(1210px, calc(100vw - 52px));
+      margin: 0 auto;
+      padding: 42px 0 82px;
+    }
+
+    .intro {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 28px;
+      align-items: end;
+      margin-bottom: 28px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 42px;
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    .intro p {
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.7;
+      max-width: 720px;
+    }
+
+    .primary, .secondary, .outline {
+      height: 48px;
+      padding: 0 20px;
+      border-radius: 999px;
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: .2s ease;
+    }
+
+    .primary {
+      background: var(--teal);
+      color: var(--white);
+      box-shadow: 0 10px 28px rgba(40, 193, 191, .25);
+    }
+
+    .primary:hover { background: var(--teal-dark); transform: translateY(-1px); }
+
+    .secondary {
+      background: var(--white);
+      color: #32363a;
+      border: 1px solid var(--line);
+    }
+
+    .outline {
+      height: 36px;
+      color: #078f8c;
+      background: var(--white);
+      border: 1px solid var(--teal);
+      padding-inline: 14px;
+    }
+
+    .flow-shell {
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-columns: 282px 1fr 336px;
+      min-height: 640px;
+      background: #fbfbfc;
+    }
+
+    .side {
+      border-right: 1px solid var(--line);
+      background: #f7f8fa;
+      padding: 26px 22px;
+    }
+
+    .profile-mini {
+      display: grid;
+      grid-template-columns: 54px 1fr;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+
+    .avatar {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: url("https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=180&q=80") center/cover;
+    }
+
+    .profile-mini strong { display: block; font-size: 17px; }
+    .profile-mini span { display: block; color: var(--muted); font-size: 13px; margin-top: 3px; }
+
+    .steps {
+      display: grid;
+      gap: 10px;
+    }
+
+    .step {
+      border-radius: 14px;
+      background: transparent;
+      padding: 13px 14px;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 10px;
+      align-items: center;
+      color: #4f555b;
+      transition: .2s ease;
+    }
+
+    .step i {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #eceff2;
+      display: grid;
+      place-items: center;
+      font-style: normal;
+      font-weight: 800;
+      color: #747b82;
+    }
+
+    .step.active {
+      background: var(--white);
+      color: var(--ink);
+      box-shadow: 0 8px 20px rgba(15, 23, 42, .06);
+    }
+
+    .step.active i {
+      background: var(--teal);
+      color: var(--white);
+    }
+
+    .completion {
+      margin-top: 34px;
+      padding: 18px;
+      background: var(--white);
+      border-radius: 18px;
+      border: 1px solid var(--line);
+    }
+
+    .completion-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+
+    .track {
+      height: 8px;
+      border-radius: 999px;
+      background: #e8ebef;
+      overflow: hidden;
+    }
+
+    .bar {
+      height: 100%;
+      width: 38%;
+      background: var(--teal);
+      border-radius: inherit;
+      transition: width .25s ease;
+    }
+
+    .main-panel {
+      padding: 30px 34px;
+      background: var(--white);
+      overflow: hidden;
+    }
+
+    .panel {
+      display: none;
+      animation: fade .25s ease both;
+    }
+
+    .panel.active { display: block; }
+
+    .panel h2 {
+      margin: 0 0 10px;
+      font-size: 30px;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    .sub {
+      margin: 0 0 26px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .field.full { grid-column: 1 / -1; }
+
+    .field label {
+      color: #363b40;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .input, .textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px 15px;
+      background: #fbfbfc;
+      outline: 0;
+      color: #1f2328;
+    }
+
+    .textarea {
+      min-height: 118px;
+      resize: vertical;
+      line-height: 1.7;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .chip {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      height: 36px;
+      padding: 0 14px;
+      background: #fbfbfc;
+      color: #3d4248;
+      font-weight: 700;
+      transition: .2s ease;
+    }
+
+    .chip.active, .chip:hover {
+      background: rgba(40,193,191,.12);
+      border-color: rgba(40,193,191,.45);
+      color: #088b89;
+    }
+
+    .question-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .question {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 18px;
+      align-items: center;
+      background: #fbfbfc;
+    }
+
+    .question strong { display: block; margin-bottom: 6px; }
+    .question span { color: var(--muted); line-height: 1.5; font-size: 14px; }
+
+    .toggle {
+      width: 52px;
+      height: 30px;
+      border-radius: 999px;
+      background: var(--teal);
+      position: relative;
+    }
+
+    .toggle::after {
+      content: "";
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--white);
+    }
+
+    .preview-card {
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      overflow: hidden;
+      background: var(--white);
+    }
+
+    .cover {
+      height: 170px;
+      background:
+        linear-gradient(180deg, transparent, rgba(0,0,0,.36)),
+        url("https://qnimg1.wellcee.com/o_1ept4dnug1fv1msq7gf11r117gnu.jpg?imageView2/1/w/900/h/460") center/cover;
+    }
+
+    .preview-body { padding: 0 24px 24px; }
+    .preview-avatar {
+      width: 74px;
+      height: 74px;
+      border-radius: 50%;
+      border: 5px solid var(--white);
+      margin-top: -38px;
+      background: url("https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=180&q=80") center/cover;
+    }
+
+    .preview-body h3 {
+      margin: 12px 0 8px;
+      font-size: 24px;
+    }
+
+    .bio {
+      color: #4b5157;
+      line-height: 1.75;
+      margin: 14px 0 0;
+    }
+
+    .rewrite {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .data-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .data-item {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      background: #fbfbfc;
+    }
+
+    .data-item strong {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+
+    .data-item p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 14px;
+    }
+
+    .assistant {
+      border-left: 1px solid var(--line);
+      background: #f7f8fa;
+      padding: 26px 22px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 18px;
+    }
+
+    .ai-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 900;
+      font-size: 18px;
+    }
+
+    .ai-dot {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--teal);
+      color: var(--white);
+      display: grid;
+      place-items: center;
+    }
+
+    .chat {
+      display: grid;
+      gap: 12px;
+      align-content: start;
+    }
+
+    .bubble {
+      border-radius: 18px;
+      padding: 13px 14px;
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .bubble.ai { background: var(--white); border: 1px solid var(--line); }
+    .bubble.me { background: var(--teal); color: var(--white); justify-self: end; }
+
+    .ai-note {
+      border-radius: 18px;
+      background: #101010;
+      color: var(--white);
+      padding: 18px;
+    }
+
+    .ai-note strong { display: block; margin-bottom: 8px; }
+    .ai-note p { margin: 0; color: rgba(255,255,255,.72); line-height: 1.6; font-size: 13px; }
+
+    .footer-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 980px) {
+      .intro { grid-template-columns: 1fr; }
+      .flow-shell { grid-template-columns: 1fr; }
+      .side, .assistant { border: 0; }
+    }
+
+    @media (max-width: 640px) {
+      .topbar-inner, .page { width: calc(100vw - 28px); }
+      .nav { gap: 12px; font-size: 13px; }
+      h1 { font-size: 32px; }
+      .form-grid, .data-grid { grid-template-columns: 1fr; }
+      .main-panel { padding: 24px 18px; }
+      .question { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="logo" href="wellcee-ai-profile-prototype.html">Wellcee<span>唯 心 所 寓</span></a>
+      <nav class="nav">
+        <a class="back" href="wellcee-ai-profile-prototype.html"><i data-lucide="arrow-left"></i> 返回首页</a>
+        <a href="#"><i data-lucide="globe-2"></i> 中文</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="intro">
+      <div>
+        <h1>注册后，AI 帮你完善个人资料</h1>
+        <p>独立注册页承接首页入口。用户先完成基础账号信息，再由 AI 引导补齐找房目标、生活方式、自我介绍和信任信息，让资料真正服务于找房推荐和室友匹配。</p>
+      </div>
+      <button class="primary" onclick="nextStep()"><i data-lucide="sparkles"></i> AI 继续引导</button>
+    </section>
+
+    <section class="flow-shell">
+      <aside class="side">
+        <div class="profile-mini">
+          <div class="avatar"></div>
+          <div><strong>Yuki</strong><span>上海 · 8 月入住</span></div>
+        </div>
+        <div class="steps">
+          <button class="step active" onclick="goStep(0)"><i>1</i><span>基础找房目标</span></button>
+          <button class="step" onclick="goStep(1)"><i>2</i><span>生活方式追问</span></button>
+          <button class="step" onclick="goStep(2)"><i>3</i><span>主页文案生成</span></button>
+          <button class="step" onclick="goStep(3)"><i>4</i><span>画像数据沉淀</span></button>
+        </div>
+        <div class="completion">
+          <div class="completion-row"><span>资料完整度</span><b id="progressText">38%</b></div>
+          <div class="track"><div class="bar" id="bar"></div></div>
+        </div>
+      </aside>
+
+      <section class="main-panel">
+        <article class="panel active">
+          <h2>告诉 Wellcee 你想怎么住</h2>
+          <p class="sub">AI 会先抓取硬性条件，让后续推荐不再只按城市和价格粗筛。</p>
+          <div class="form-grid">
+            <div class="field"><label>目标城市</label><input class="input" value="上海"></div>
+            <div class="field"><label>入住时间</label><input class="input" value="2026 年 8 月上旬"></div>
+            <div class="field"><label>预算范围</label><input class="input" value="3500 - 5200 RMB / 月"></div>
+            <div class="field"><label>通勤偏好</label><input class="input" value="到徐汇 35 分钟内"></div>
+            <div class="field full"><label>一句话需求</label><textarea class="textarea">想找安静、交通稳定的合租房。工作日需要专注休息，周末希望附近有咖啡店、展览和轻社交空间。</textarea></div>
+          </div>
+          <div class="chips">
+            <button class="chip active">跨城工作</button>
+            <button class="chip">短租过渡</button>
+            <button class="chip active">无烟</button>
+            <button class="chip">可接受宠物</button>
+          </div>
+          <div class="footer-actions"><button class="secondary">保存草稿</button><button class="primary" onclick="nextStep()">下一步</button></div>
+        </article>
+
+        <article class="panel">
+          <h2>AI 只追问会影响匹配的问题</h2>
+          <p class="sub">把含糊表达拆成结构化信号，用于房源排序与室友冲突预判。</p>
+          <div class="question-list">
+            <div class="question"><div><strong>你对夜间噪音敏感吗？</strong><span>用于推荐楼层、朝向、临街程度和社区活跃度。</span></div><button class="toggle"></button></div>
+            <div class="question"><div><strong>公共区域清洁频率希望如何约定？</strong><span>用于室友匹配，提前降低合租摩擦。</span></div><button class="toggle"></button></div>
+            <div class="question"><div><strong>周末是否接受朋友来访？</strong><span>用于建立社交边界，提升双方预期透明度。</span></div><button class="toggle"></button></div>
+            <div class="question"><div><strong>是否愿意补充职业/学校认证？</strong><span>用于提升信任度，但不公开敏感证件信息。</span></div><button class="toggle"></button></div>
+          </div>
+          <div class="footer-actions"><button class="secondary" onclick="goStep(0)">上一步</button><button class="primary" onclick="nextStep()">生成主页</button></div>
+        </article>
+
+        <article class="panel">
+          <h2>生成可编辑的个人主页</h2>
+          <p class="sub">AI 把回答整理成更自然的表达，用户可以选择语气并保留最终编辑权。</p>
+          <div class="preview-card">
+            <div class="cover"></div>
+            <div class="preview-body">
+              <div class="preview-avatar"></div>
+              <h3>Yuki · 产品运营</h3>
+              <div class="chips">
+                <button class="chip active">安静作息</button>
+                <button class="chip active">周末探索城市</button>
+                <button class="chip active">无烟</button>
+                <button class="chip">可接受猫</button>
+              </div>
+              <p class="bio" id="bio">我正在上海找 8 月入住的合租房，希望通勤稳定、公共区域保持清爽。工作日偏安静，周末喜欢逛展、咖啡和轻社交。期待和尊重边界、沟通直接的室友一起住。</p>
+              <div class="rewrite">
+                <button class="outline" onclick="rewrite('warm')">更温暖</button>
+                <button class="outline" onclick="rewrite('direct')">更直接</button>
+                <button class="outline" onclick="rewrite('en')">英文版</button>
+                <button class="outline" onclick="rewrite('trust')">强调可信</button>
+              </div>
+            </div>
+          </div>
+          <div class="footer-actions"><button class="secondary" onclick="goStep(1)">上一步</button><button class="primary" onclick="nextStep()">查看数据用途</button></div>
+        </article>
+
+        <article class="panel">
+          <h2>沉淀为可解释的 Living Graph</h2>
+          <p class="sub">用户看见的是资料页，系统沉淀的是经授权、可更新、可解释的居住偏好。</p>
+          <div class="data-grid">
+            <div class="data-item"><strong><i data-lucide="home"></i> 找房推荐</strong><p>预算、通勤、入住时间、租期、噪音敏感、宠物接受度进入召回与排序。</p></div>
+            <div class="data-item"><strong><i data-lucide="users"></i> 室友匹配</strong><p>作息、清洁、访客、社交边界和沟通风格用于匹配解释。</p></div>
+            <div class="data-item"><strong><i data-lucide="shield-check"></i> 信任建设</strong><p>认证、完整度、生活照片和互动质量形成可信提示，降低陌生交易风险。</p></div>
+            <div class="data-item"><strong><i data-lucide="refresh-cw"></i> 持续校准</strong><p>收藏、跳过、改写和联系反馈让 AI 逐步理解真实偏好。</p></div>
+          </div>
+          <div class="footer-actions"><button class="secondary" onclick="goStep(2)">上一步</button><button class="primary" onclick="goStep(0)">重新体验</button></div>
+        </article>
+      </section>
+
+      <aside class="assistant">
+        <div class="ai-head"><span class="ai-dot"><i data-lucide="sparkles"></i></span> AI Profile Coach</div>
+        <div class="chat">
+          <div class="bubble ai">我会根据你的找房目标，只追问会影响推荐和室友匹配的信息。</div>
+          <div class="bubble me">我想找上海 8 月入住的安静合租房。</div>
+          <div class="bubble ai">收到。我会优先补齐通勤、噪音、清洁和社交边界。</div>
+        </div>
+        <div class="ai-note">
+          <strong id="aiNoteTitle">当前 AI 任务</strong>
+          <p id="aiNote">从自然语言中抽取城市、预算、入住时间、通勤范围，减少用户重复填写。</p>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    const steps = Array.from(document.querySelectorAll('.step'));
+    const panels = Array.from(document.querySelectorAll('.panel'));
+    const bar = document.getElementById('bar');
+    const progressText = document.getElementById('progressText');
+    const aiNoteTitle = document.getElementById('aiNoteTitle');
+    const aiNote = document.getElementById('aiNote');
+    const progress = [38, 61, 84, 96];
+    const notes = [
+      ['当前 AI 任务', '从自然语言中抽取城市、预算、入住时间、通勤范围，减少用户重复填写。'],
+      ['动态追问', '只补齐会影响推荐、匹配或信任的关键字段，并解释每个问题的用途。'],
+      ['内容生成', '将零散回答生成可编辑主页，支持温暖、直接、英文和可信表达。'],
+      ['数据沉淀', '把资料转成找房推荐、室友匹配、信任建设可复用的结构化信号。']
+    ];
+    let current = 0;
+
+    function goStep(index) {
+      current = index;
+      steps.forEach((step, i) => step.classList.toggle('active', i === index));
+      panels.forEach((panel, i) => panel.classList.toggle('active', i === index));
+      bar.style.width = progress[index] + '%';
+      progressText.textContent = progress[index] + '%';
+      aiNoteTitle.textContent = notes[index][0];
+      aiNote.textContent = notes[index][1];
+      lucide.createIcons();
+    }
+
+    function nextStep() {
+      goStep((current + 1) % panels.length);
+    }
+
+    function rewrite(mode) {
+      const bio = document.getElementById('bio');
+      const variants = {
+        warm: '我希望在上海找到一个舒服、彼此尊重的小家。工作日喜欢安静和稳定通勤，周末会去看展、喝咖啡，也很愿意和室友偶尔一起探索城市。',
+        direct: '8 月入住，预算 3500-5200。希望通勤 35 分钟内、无烟、公共区域清爽。工作日安静，周末可轻社交，偏好沟通直接、尊重边界的室友。',
+        en: 'I am looking for a shared apartment in Shanghai from August. I value a quiet weekday routine, clean common areas, and a commute under 35 minutes. On weekends, I enjoy cafes, exhibitions, and light social time.',
+        trust: '已完成手机号与职业信息认证，找 8 月入住的合租房。希望提前沟通清洁、访客和作息规则，让彼此预期清楚，住得更安心。'
+      };
+      bio.textContent = variants[mode];
+    }
+
+    document.querySelectorAll('.chip').forEach((chip) => {
+      chip.addEventListener('click', () => chip.classList.toggle('active'));
+    });
+
+    lucide.createIcons();
+  </script>
+</body>
+</html>

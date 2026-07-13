@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wellcee Web Home Prototype</title>
+  <link rel="preconnect" href="https://hsp.wellcee.com" crossorigin>
+  <link rel="preconnect" href="https://qnimg1.wellcee.com" crossorigin>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    :root {
+      --teal: #28c1bf;
+      --teal-dark: #18aaa8;
+      --ink: #101010;
+      --page: #f5f6f8;
+      --white: #fff;
+      --muted: #6f7378;
+      --shadow: 0 16px 42px rgba(15, 23, 42, .12);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--page);
+      overflow-x: hidden;
+      font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", Arial, sans-serif;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { border: 0; font: inherit; cursor: pointer; }
+
+    .hero {
+      min-height: 500px;
+      color: var(--white);
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.42), rgba(0,0,0,.2) 36%, rgba(0,0,0,.42)),
+        url("https://hsp.wellcee.com/20260409/256571bcd45b5c4dc7a8c7e294b07ced.jpg?e=1775702417&token=MsEXTYfBHjEXU9iB8C1gQn1B46pJlqKhmuJ0UbS-:loi0Wdz-6-9Ak7D6pxqtqmg7xnA=") center/cover;
+      position: relative;
+    }
+
+    .topbar {
+      width: min(1200px, calc(100vw - 56px));
+      height: 72px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: grid;
+      gap: 1px;
+      color: var(--white);
+      font-weight: 900;
+      line-height: .95;
+      font-size: 22px;
+      letter-spacing: 0;
+    }
+
+    .logo span {
+      font-size: 12px;
+      letter-spacing: 3px;
+      font-weight: 700;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 34px;
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .nav a:hover { color: var(--teal); }
+
+    .lang {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .login {
+      color: var(--white);
+      background: var(--teal);
+      border-radius: 24px;
+      padding: 0 22px;
+      height: 40px;
+      display: inline-flex;
+      align-items: center;
+      font-weight: 800;
+      transition: .2s ease;
+    }
+
+    .login:hover, .search-btn:hover { background: var(--teal-dark); transform: translateY(-1px); }
+
+    .hero-center {
+      width: min(920px, calc(100vw - 48px));
+      margin: 72px auto 0;
+      text-align: center;
+      animation: enter .6s ease both;
+    }
+
+    h1 {
+      margin: 0 0 54px;
+      font-size: 56px;
+      line-height: 1.08;
+      font-weight: 900;
+      letter-spacing: 0;
+      text-shadow: 0 2px 14px rgba(0,0,0,.24);
+    }
+
+    .mobile-title { display: none; }
+
+    .search {
+      width: min(420px, calc(100vw - 52px));
+      min-height: 68px;
+      margin: 0 auto;
+      border-radius: 999px;
+      background: var(--white);
+      padding: 6px 6px 6px 24px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      box-shadow: 0 12px 34px rgba(0,0,0,.2);
+    }
+
+    .city {
+      color: #222;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 18px;
+      font-weight: 800;
+      text-align: left;
+    }
+
+    .search-btn {
+      border-radius: 999px;
+      color: var(--white);
+      background: var(--teal);
+      min-height: 56px;
+      padding: 0 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 18px;
+      font-weight: 900;
+      transition: .2s ease;
+    }
+
+    .section {
+      width: min(1210px, calc(100vw - 52px));
+      margin: 0 auto;
+      padding: 72px 0;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 40px;
+      line-height: 1.1;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .arrows { display: flex; gap: 12px; }
+
+    .arrow {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--white);
+      display: grid;
+      place-items: center;
+      color: #404040;
+    }
+
+    .guide-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    .guide-card {
+      height: 256px;
+      border-radius: 18px;
+      overflow: hidden;
+      position: relative;
+      border: 6px solid var(--white);
+      box-shadow: 0 10px 28px rgba(0,0,0,.08);
+      background: #ddd;
+    }
+
+    .guide-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: brightness(.72);
+      transition: transform .35s ease;
+    }
+
+    .guide-card:hover img { transform: scale(1.05); }
+
+    .guide-card strong {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      color: var(--white);
+      font-size: 34px;
+      text-shadow: 0 4px 22px rgba(0,0,0,.32);
+    }
+
+    .home-cta {
+      background: var(--white);
+      padding: 74px 0 96px;
+    }
+
+    .home-cta-inner {
+      width: min(980px, calc(100vw - 52px));
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .home-cta p {
+      margin: 14px 0 0;
+      color: var(--muted);
+      line-height: 1.75;
+      font-size: 17px;
+    }
+
+    .primary {
+      height: 56px;
+      padding: 0 24px;
+      border-radius: 999px;
+      background: var(--teal);
+      color: var(--white);
+      font-size: 18px;
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .download-mask {
+      position: fixed;
+      inset: auto 0 0;
+      min-height: 188px;
+      background: rgba(0,0,0,.68);
+      color: var(--white);
+      z-index: 8;
+      display: grid;
+      place-items: center;
+      transition: transform .25s ease;
+    }
+
+    .download-mask.hide { transform: translateY(110%); }
+
+    .download-inner {
+      width: min(980px, calc(100vw - 48px));
+      display: grid;
+      grid-template-columns: 210px 1fr 112px auto;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .app-shot {
+      height: 160px;
+      border-radius: 22px 22px 0 0;
+      background: url("https://qnimg1.wellcee.com/Guide.jpg?imageView2/1/w/360/h/360") center/cover;
+      box-shadow: 0 14px 34px rgba(0,0,0,.32);
+    }
+
+    .download-copy strong {
+      display: block;
+      color: var(--teal);
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+
+    .qr {
+      width: 112px;
+      height: 112px;
+      border-radius: 10px;
+      background:
+        linear-gradient(90deg, #000 50%, transparent 50%) 0 0/16px 16px,
+        linear-gradient(#000 50%, transparent 50%) 0 0/16px 16px,
+        #fff;
+      border: 10px solid #fff;
+    }
+
+    .mask-close {
+      background: transparent;
+      color: rgba(255,255,255,.8);
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+    }
+
+    @keyframes enter {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 980px) {
+      .nav { gap: 16px; font-size: 14px; }
+      h1 { font-size: 42px; }
+      .guide-grid { grid-template-columns: 1fr 1fr; }
+      .home-cta-inner { grid-template-columns: 1fr; }
+      .download-mask { display: none; }
+    }
+
+    @media (max-width: 640px) {
+      .topbar, .section, .home-cta-inner { width: calc(100vw - 28px); }
+      .topbar { height: 64px; }
+      .nav a:not(.lang), .login { display: none; }
+      .hero { min-height: 430px; }
+      .hero-center { margin-top: 58px; }
+      h1 { font-size: 34px; margin-bottom: 36px; }
+      .desktop-title { display: none; }
+      .mobile-title { display: inline; }
+      .search { grid-template-columns: 1fr; padding: 10px; border-radius: 28px; gap: 10px; }
+      .city { padding: 8px 10px; }
+      .search-btn { width: 100%; }
+      .section { padding: 44px 0; }
+      h2 { font-size: 32px; }
+      .guide-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <nav class="topbar">
+      <a class="logo" href="#">
+        Wellcee
+        <span>唯 心 所 寓</span>
+      </a>
+      <div class="nav">
+        <a href="#">首页</a>
+        <a href="#homes">房源</a>
+        <a href="#community">社区</a>
+        <a href="#">关于我们⌄</a>
+        <a class="lang" href="#"><i data-lucide="globe-2"></i> 中文</a>
+        <a class="login" href="wellcee-register-profile.html">注册/登录</a>
+      </div>
+    </nav>
+    <div class="hero-center">
+      <h1><span class="desktop-title">一个有灵魂的租房平台</span><span class="mobile-title">一个有灵魂的<br>租房平台</span></h1>
+      <div class="search">
+        <div class="city"><i data-lucide="map-pin"></i> 重庆 <i data-lucide="chevron-down" size="16"></i></div>
+        <a class="search-btn" href="wellcee-register-profile.html"><i data-lucide="search"></i> 搜索房源</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="section" id="homes">
+    <div class="section-head">
+      <h2>攻略</h2>
+      <div class="arrows">
+        <button class="arrow" aria-label="上一张"><i data-lucide="chevron-left"></i></button>
+        <button class="arrow" aria-label="下一张"><i data-lucide="chevron-right"></i></button>
+      </div>
+    </div>
+    <div class="guide-grid">
+      <a class="guide-card" href="wellcee-register-profile.html"><img src="https://qnimg1.wellcee.com/Guide.jpg?imageView2/1/w/600/h/544" alt="下载 App"><strong>下载APP</strong></a>
+      <a class="guide-card" href="wellcee-register-profile.html"><img src="https://qnimg1.wellcee.com/o_1ept4dnug1fv1msq7gf11r117gnu.jpg?imageView2/1/w/600/h/544" alt="上海"><strong>上海</strong></a>
+      <a class="guide-card" href="wellcee-register-profile.html"><img src="https://qnimg1.wellcee.com/o_1ept4ebs3160hdjb1q5j14ec13h518.jpeg?imageView2/1/w/600/h/544" alt="北京"><strong>北京</strong></a>
+      <a class="guide-card" href="wellcee-register-profile.html"><img src="https://qnimg1.wellcee.com/o_1ept4emattg916pt1p798dmj9p1d.jpeg?imageView2/1/w/600/h/544" alt="深圳"><strong>深圳</strong></a>
+    </div>
+  </section>
+
+  <section class="home-cta" id="community">
+    <div class="home-cta-inner">
+      <div>
+        <h2>注册后由 AI 帮你完善资料</h2>
+        <p>资料完善流程已经拆到独立页面。用户从首页进入注册/登录后，再由 AI 引导补齐找房目标、生活方式、个人介绍和信任信息。</p>
+      </div>
+      <a class="primary" href="wellcee-register-profile.html"><i data-lucide="sparkles"></i> 进入注册页</a>
+    </div>
+  </section>
+
+  <aside class="download-mask" id="downloadMask">
+    <div class="download-inner">
+      <div class="app-shot" aria-hidden="true"></div>
+      <div class="download-copy">
+        <strong>扫码下载APP</strong>
+        <span>感受多元化的租房体验</span>
+      </div>
+      <div class="qr" aria-label="二维码示意"></div>
+      <button class="mask-close" onclick="document.getElementById('downloadMask').classList.add('hide')" aria-label="关闭下载提示"><i data-lucide="x"></i></button>
+    </div>
+  </aside>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>
