@@ -166,7 +166,7 @@ def first_link(nodes: list[Node]) -> str:
 
 def normalize_href(href: str, base_url: str) -> str:
     href = normalize_text(href)
-    if not href:
+    if not href or href == "#":
         return ""
     try:
         parsed = urlsplit(href)

@@ -79,6 +79,21 @@ class ScrapeGivemeocLinksTests(unittest.TestCase):
 
         self.assertEqual(jobs[0]["apply_url"], "邮箱投递：resume@example.com（邮件主题：学校+姓名）")
 
+    def test_extract_jobs_skips_login_required_placeholder_links(self):
+        html = """
+        <tr data-id="1">
+          <td class="crt-col-company">登录后可见公司</td>
+          <td class="crt-col-links">
+            <span class="crt-login-required-cell crt-login-required-action">
+              <span>登录后可见</span>
+              <a class="btn btn-dark login-btn crt-inline-login-button" href="#">登录</a>
+            </span>
+          </td>
+        </tr>
+        """
+
+        self.assertEqual(extract_jobs(html, page=1), [])
+
 
 if __name__ == "__main__":
     unittest.main()
